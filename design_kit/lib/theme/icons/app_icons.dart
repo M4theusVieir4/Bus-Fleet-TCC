@@ -115,4 +115,7 @@ abstract class AppIcons {
   static const logo = '$_basePathPNG/logo.png';
 
   static const splashLogo = '$_basePathPNG/splashLogo.png';
+
+  static const email = '$_basePathPNG/email.png';
+  static const key = '$_basePathPNG/key.png';
 }

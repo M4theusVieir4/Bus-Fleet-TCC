@@ -108,7 +108,8 @@ class ADPTextFormField extends FormField<String> {
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           filled: fillColor != null || !enable,
                           labelText: label,
-                          labelStyle: design.labelM(color: design.neutral300),
+                          labelStyle:
+                              design.labelLMedium(color: design.neutral300),
                           errorStyle: design.caption(
                             color: design.error100,
                           ),
