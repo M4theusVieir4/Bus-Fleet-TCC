@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
             image: const AssetImage(AppIcons.logo),
             fit: BoxFit.none,
             colorFilter:
-                ColorFilter.mode(myColor.withOpacity(1), BlendMode.dstATop),
+                ColorFilter.mode(myColor.withOpacity(1), BlendMode.lighten),
           ),
         ),
       ),
@@ -91,8 +91,9 @@ class _LoginPageState extends State<LoginPage> {
       width: mediaSize.width,
       height: mediaSize.height * 0.65,
       child: Card(
+        margin: EdgeInsets.zero,
         color: design.secondary,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
@@ -144,13 +145,27 @@ class _LoginPageState extends State<LoginPage> {
             'Por favor realize o login com suas informações',
             style: design.overline(color: design.primary),
           ),
+          const SizedBox(
+            height: 20,
+          ),
           ADPTextFormField(
+            fillColor: design.neutral600,
             context,
             controller: _emailController,
-            prefixIcon: Image.asset(AppIcons.email),
+            prefixIcon: Container(
+              margin: EdgeInsets.only(right: 30),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: design.primary,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    topLeft: Radius.circular(8)),
+              ),
+              child: Image.asset(AppIcons.email),
+            ),
             label: 'Endereço de email',
             // enable: !_accessWithBiometrics,
-            validators: Validators.required('required_field'),
+            validators: Validators.required('campo obrigatório'),
           ),
           SizedBox(
             height: 16.height,
@@ -165,9 +180,20 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: ADPTextFormField(
+              fillColor: design.neutral600,
               context,
               controller: _passwordController,
-              prefixIcon: Image.asset(AppIcons.key),
+              prefixIcon: Container(
+                margin: EdgeInsets.only(right: 30),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: design.primary,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      topLeft: Radius.circular(8)),
+                ),
+                child: Image.asset(AppIcons.key),
+              ),
               label: 'Senha',
               obscureText: _isObscurePassword,
               toggleObscureText: () {
@@ -176,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                 });
               },
               formFieldType: TextInputType.text,
-              validators: Validators.required('required_field'),
+              validators: Validators.required('campo obrigatório'),
             ),
           ),
           const SizedBox(
@@ -219,16 +245,19 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           ADPDefaultButton(
-            label: 'login', //!_accessWithBiometrics
+            label: 'Entrar', //!_accessWithBiometrics
             // ? 'login'.translate()
             // : "biometric_access".translate(),
-            primaryColor: design.secondary300,
+            primaryColor: design.tertiary100,
             labelColor: design.neutral900,
             colorLoading: design.neutral900,
             onPressed: _onPressed,
             // !_accessWithBiometrics ? _onPressed : _onPressedBiometric,
             loading: _cubit.state is LoginLoadingState,
             enablePressOnLoading: false,
+          ),
+          SizedBox(
+            height: 10,
           ),
           Center(
             child: Column(
@@ -241,18 +270,27 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(AppIcons.facebookPNG, height: 40),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset(AppIcons.twitter, height: 40),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SvgPicture.asset(
-                      AppIcons.google,
+                    Image.asset(
+                      AppIcons.facebookPNG,
                       height: 40,
-                    )
+                      width: 40,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset(
+                      AppIcons.twitter,
+                      height: 40,
+                      width: 40,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset(
+                      AppIcons.googlePNG,
+                      height: 45,
+                      width: 45,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -269,109 +307,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // Widget _buildForm() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         "Welcome",
-  //         style: TextStyle(
-  //             color: myColor, fontSize: 32, fontWeight: FontWeight.w500),
-  //       ),
-  //       _buildGreyText("Please login with your information"),
-  //       const SizedBox(height: 20),
-  //       _buildGreyText("Email address"),
-  //       _buildInputField(_emailController),
-  //       const SizedBox(height: 20),
-  //       _buildGreyText("Password"),
-  //       _buildInputField(_passwordController, isPassword: true),
-  //       const SizedBox(height: 20),
-  //       _buildRememberForgot(),
-  //       const SizedBox(height: 20),
-  //       _buildLoginButton(),
-  //       const SizedBox(height: 20),
-  //       _buildOtherLogin(),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildGreyText(String text) {
-  //   return Text(
-  //     text,
-  //     style: const TextStyle(color: Colors.grey),
-  //   );
-  // }
-
-  // Widget _buildInputField(TextEditingController controller,
-  //     {bool isPassword = false}) {
-  //   return TextField(
-  //     controller: controller,
-  //     decoration: InputDecoration(
-  //       suffixIcon: isPassword ? Icon(Icons.remove_red_eye) : Icon(Icons.done),
-  //     ),
-  //     obscureText: isPassword,
-  //   );
-  // }
-
-  // Widget _buildRememberForgot() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Row(
-  //         children: [
-  //           Checkbox(
-  //               value: rememberUser,
-  //               onChanged: (value) {
-  //                 setState(() {
-  //                   rememberUser = value!;
-  //                 });
-  //               }),
-  //           _buildGreyText("Remember me"),
-  //         ],
-  //       ),
-  //       TextButton(
-  //           onPressed: () {}, child: _buildGreyText("I forgot my password"))
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildLoginButton() {
-  //   return ElevatedButton(
-  //     onPressed: () {
-  //       debugPrint("Email : ${_emailController.text}");
-  //       debugPrint("Password : ${_passwordController.text}");
-  //     },
-  //     style: ElevatedButton.styleFrom(
-  //       shape: const StadiumBorder(),
-  //       elevation: 20,
-  //       shadowColor: myColor,
-  //       minimumSize: const Size.fromHeight(60),
-  //     ),
-  //     child: const Text("LOGIN"),
-  //   );
-  // }
-
-  // Widget _buildOtherLogin() {
-  //   return Center(
-  //     child: Column(
-  //       children: [
-  //         _buildGreyText("ou entrar com"),
-  //         const SizedBox(height: 10),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           children: [
-  //             Image.asset(AppIcons.facebookPNG, height: 40),
-  //             Image.asset(AppIcons.twitter, height: 40),
-  //             SvgPicture.asset(
-  //               AppIcons.google,
-  //               height: 40,
-  //             )
-  //           ],
-  //         ),
-  //         _buildGreyText("Novo aqui? Clique aqui para se cadastrar")
-  //       ],
-  //     ),
-  //   );
-  // }
 }

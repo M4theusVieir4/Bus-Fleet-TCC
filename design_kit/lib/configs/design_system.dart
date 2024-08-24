@@ -279,7 +279,7 @@ class AppDesign {
     this.neutral300 = const Color(0xFF707580),
     this.neutral400 = const Color(0xFF9197A3),
     this.neutral500 = const Color(0xFFC5C9D1),
-    this.neutral600 = const Color(0xFFEBEBF0),
+    this.neutral600 = const Color(0xFFD9D9D9),
     this.neutral700 = const Color(0xFFFFFFFF),
     this.neutral800 = const Color(0xFFFFFFFF),
     this.neutral900 = const Color(0xFFFFFFFF),
