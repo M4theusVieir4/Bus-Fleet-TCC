@@ -4,6 +4,7 @@ import 'package:busbr/modules/auth/login/cubit/login_controller.dart';
 import 'package:busbr/modules/auth/login/cubit/login_state.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class LoginPage extends StatefulWidget {
@@ -55,15 +56,35 @@ class _LoginPageState extends State<LoginPage> {
     myColor = DesignSystem.of(context).primary;
     mediaSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: Container(
-          height: mediaSize.height,
-          width: mediaSize.width,
-          child: Stack(alignment: Alignment.topCenter, children: [
-            Positioned(top: 0, child: _buildTop()),
-            Positioned(bottom: 0, child: _buildBottom()),
-          ]),
-        ),
+      body: BlocConsumer<LoginController, LoginState>(
+        bloc: _cubit,
+        listener: (context, state) {
+          if (state is LoginSucccessState) {
+            Modular.to.pushNamed(BusBrRoutes.register);
+          }
+
+          if (state is LoginErrorState) {
+            ADPBottomSheet.error(
+              context: context,
+              title: 'Algo deu errado!',
+              message:
+                  'Usuário ou senha incorretos. Verifique as informações e tente novamente',
+              actionMessage: 'Tente novamente',
+            );
+          }
+        },
+        builder: (context, state) {
+          return Center(
+            child: Container(
+              height: mediaSize.height,
+              width: mediaSize.width,
+              child: Stack(alignment: Alignment.topCenter, children: [
+                Positioned(top: 0, child: _buildTop()),
+                Positioned(bottom: 0, child: _buildBottom()),
+              ]),
+            ),
+          );
+        },
       ),
     );
   }

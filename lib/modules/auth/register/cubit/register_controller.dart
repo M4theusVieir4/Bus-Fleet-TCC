@@ -25,7 +25,7 @@ class RegisterController extends Cubit<RegisterState> {
       password: password,
     );
 
-    if (registerResult == "Usuário Cadastrado") {
+    if (registerResult == null) {
       emit(RegisterSucccessState());
     } else {
       emit(RegisterErrorState(registerResult));

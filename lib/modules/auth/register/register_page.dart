@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
-            height: 10,
+            height: 60,
           ),
           Text(
             'Cadastre-se',

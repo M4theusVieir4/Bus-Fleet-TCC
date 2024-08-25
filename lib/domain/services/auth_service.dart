@@ -6,7 +6,7 @@ class AuthService implements IAuthService {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<String> registerUser({
+  Future<String?> registerUser({
     required String user,
     required String email,
     required String password,
@@ -19,8 +19,7 @@ class AuthService implements IAuthService {
       );
 
       await userCredential.user!.updateDisplayName(user);
-      final String confirmacaoCadastro = "Usuário Cadastrado";
-      return confirmacaoCadastro;
+      return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         return 'E-mail já existe';
@@ -32,6 +31,20 @@ class AuthService implements IAuthService {
       }
     } catch (e) {
       return 'Erro desconhecido: $e';
+    }
+  }
+
+  @override
+  Future<String?> loginUsers(
+      {required String email, required String password}) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 }
