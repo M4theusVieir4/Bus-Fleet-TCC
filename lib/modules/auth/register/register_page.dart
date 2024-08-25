@@ -1,7 +1,7 @@
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:busbr/infra/core/validators/validators.dart';
-import 'package:busbr/modules/auth/login/cubit/login_controller.dart';
-import 'package:busbr/modules/auth/login/cubit/login_state.dart';
+import 'package:busbr/modules/auth/register/cubit/register_controller.dart';
+import 'package:busbr/modules/auth/register/cubit/register_state.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,17 +16,21 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late Color myColor;
   late Size mediaSize;
+  late TextEditingController _userController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  late TextEditingController _passwordConfirmController;
   late GlobalKey<FormState> _formKey;
-  late LoginController _cubit;
+  late RegisterController _cubit;
   bool _isObscurePassword = true;
   bool rememberUser = false;
 
   @override
   void initState() {
+    _userController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _passwordConfirmController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _cubit = Modular.get()..initialize();
     super.initState();
@@ -34,15 +38,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    _userController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _passwordConfirmController.dispose();
     _cubit.close();
     super.dispose();
   }
 
   void _onPressed() {
     if (_formKey.currentState?.validate() ?? false) {
-      _cubit.login(
+      _cubit.register(
+        user: _userController.text,
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -162,28 +169,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     bottomLeft: Radius.circular(8),
                     topLeft: Radius.circular(8)),
               ),
-              child: Image.asset(AppIcons.userName),
-            ),
-            label: 'Nome completo',
-            // enable: !_accessWithBiometrics,
-            validators: Validators.required('campo obrigatório'),
-          ),
-          SizedBox(
-            height: 16.height,
-          ),
-          ADPTextFormField(
-            fillColor: design.neutral600,
-            context,
-            controller: _emailController,
-            prefixIcon: Container(
-              margin: EdgeInsets.only(right: 30),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: design.primary,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    topLeft: Radius.circular(8)),
-              ),
               child: Image.asset(AppIcons.email),
             ),
             label: 'Endereço de email',
@@ -196,7 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ADPTextFormField(
             fillColor: design.neutral600,
             context,
-            controller: _emailController,
+            controller: _userController,
             prefixIcon: Container(
               margin: EdgeInsets.only(right: 30),
               padding: EdgeInsets.all(10),
@@ -224,30 +209,63 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: design.labelS(color: design.info100),
               ),
             ),
-            child: ADPTextFormField(
-              fillColor: design.neutral600,
-              context,
-              controller: _passwordController,
-              prefixIcon: Container(
-                margin: EdgeInsets.only(right: 30),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: design.primary,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      topLeft: Radius.circular(8)),
+            child: Column(
+              children: [
+                ADPTextFormField(
+                  fillColor: design.neutral600,
+                  context,
+                  controller: _passwordController,
+                  prefixIcon: Container(
+                    margin: EdgeInsets.only(right: 30),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: design.primary,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          topLeft: Radius.circular(8)),
+                    ),
+                    child: Image.asset(AppIcons.key),
+                  ),
+                  label: 'Senha',
+                  obscureText: _isObscurePassword,
+                  toggleObscureText: () {
+                    setState(() {
+                      _isObscurePassword = !_isObscurePassword;
+                    });
+                  },
+                  formFieldType: TextInputType.text,
+                  validators: Validators.required('campo obrigatório'),
                 ),
-                child: Image.asset(AppIcons.key),
-              ),
-              label: 'Senha',
-              obscureText: _isObscurePassword,
-              toggleObscureText: () {
-                setState(() {
-                  _isObscurePassword = !_isObscurePassword;
-                });
-              },
-              formFieldType: TextInputType.text,
-              validators: Validators.required('campo obrigatório'),
+                SizedBox(
+                  height: 16.height,
+                ),
+                ADPTextFormField(
+                  fillColor: design.neutral600,
+                  context,
+                  controller: _passwordConfirmController,
+                  prefixIcon: Container(
+                    margin: EdgeInsets.only(right: 30),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: design.primary,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          topLeft: Radius.circular(8)),
+                    ),
+                    child: Image.asset(AppIcons.key),
+                  ),
+                  label: 'Confirmar Senha',
+                  obscureText: _isObscurePassword,
+                  toggleObscureText: () {
+                    setState(() {
+                      _isObscurePassword = !_isObscurePassword;
+                    });
+                  },
+                  formFieldType: TextInputType.text,
+                  validators: Validators.compare(
+                      _passwordController, 'As senhas são diferentes'),
+                ),
+              ],
             ),
           ),
           const SizedBox(
@@ -262,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
             colorLoading: design.neutral900,
             onPressed: _onPressed,
             // !_accessWithBiometrics ? _onPressed : _onPressedBiometric,
-            loading: _cubit.state is LoginLoadingState,
+            loading: _cubit.state is RegisterLoadingState,
             enablePressOnLoading: false,
           ),
           SizedBox(

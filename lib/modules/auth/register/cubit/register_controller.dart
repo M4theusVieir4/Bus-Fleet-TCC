@@ -13,18 +13,22 @@ class RegisterController extends Cubit<RegisterState> {
   }
 
   Future<void> register({
+    required String user,
     required String email,
     required String password,
   }) async {
     emit(RegisterLoadingState());
 
     var registerResult = await _authService.registerUser(
+      user: user,
       email: email,
       password: password,
     );
 
-    registerResult.result((data) async {
+    if (registerResult == "Usuário Cadastrado") {
       emit(RegisterSucccessState());
-    }, (error) => {emit(RegisterErrorState(error.message))});
+    } else {
+      emit(RegisterErrorState(registerResult));
+    }
   }
 }

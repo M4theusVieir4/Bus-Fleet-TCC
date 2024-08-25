@@ -18,13 +18,13 @@ class LoginController extends Cubit<LoginState> {
   }) async {
     emit(LoginLoadingState());
 
-    var loginResult = await _authService.registerUser(
-      email: email,
-      password: password,
-    );
+    // var loginResult = await _authService.loginUser(
+    //   email: email,
+    //   password: password,
+    // );
 
-    loginResult.result((data) async {
-      emit(LoginSucccessState());
-    }, (error) => {emit(LoginErrorState(error.message))});
+    // // loginResult.result((data) async {
+    // //   emit(LoginSucccessState());
+    // // }, (error) => {emit(LoginErrorState(error.message))});
   }
 }
