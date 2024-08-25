@@ -4,6 +4,7 @@ import 'package:busbr/modules/auth/register/cubit/register_controller.dart';
 import 'package:busbr/modules/auth/register/cubit/register_state.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -62,16 +63,33 @@ class _RegisterPageState extends State<RegisterPage> {
     myColor = DesignSystem.of(context).primary;
     mediaSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: Container(
-          height: mediaSize.height,
-          width: mediaSize.width,
-          child: Stack(alignment: Alignment.topCenter, children: [
-            Positioned(top: 0, child: _buildTop()),
-            Positioned(bottom: 0, child: _buildBottom()),
-          ]),
-        ),
-      ),
+      body: BlocConsumer<RegisterController, RegisterState>(
+          bloc: _cubit,
+          listener: (context, state) {
+            if (state is RegisterSucccessState) {
+              _onSendRegister(design);
+            }
+            if (state is RegisterErrorState) {
+              ADPBottomSheet.error(
+                context: context,
+                title: 'Erro ao Cadastrar',
+                message: state.message,
+                actionMessage: 'tente novamente',
+              );
+            }
+          },
+          builder: (context, state) {
+            return Center(
+              child: Container(
+                height: mediaSize.height,
+                width: mediaSize.width,
+                child: Stack(alignment: Alignment.topCenter, children: [
+                  Positioned(top: 0, child: _buildTop()),
+                  Positioned(bottom: 0, child: _buildBottom()),
+                ]),
+              ),
+            );
+          }),
     );
   }
 
@@ -308,6 +326,27 @@ class _RegisterPageState extends State<RegisterPage> {
           )
         ],
       ),
+    );
+  }
+
+  void _onSendRegister(AppDesign design) {
+    ADPBottomSheet.show(
+      type: ADPBottomSheetType.accept,
+      context: context,
+      title: 'Seu cadastro foi criado',
+      actionMessage: 'Entre',
+      backMessage: 'não',
+      backgroundColor: design.neutral900,
+      message: 'Entre com seu novo cadastro',
+      icon: Image.asset(
+        AppIcons.userName,
+        color: design.primary,
+        height: 40,
+        width: 40,
+      ),
+      onAction: () {
+        Modular.to.pushNamed(Modular.initialRoute);
+      },
     );
   }
 }

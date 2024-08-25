@@ -287,9 +287,9 @@ Widget _renderButtons({
     replacement: Padding(
       padding: EdgeInsets.only(bottom: 40.0.height),
       child: ADPDefaultButton(
-        labelStyle: design.buttonL(color: labelColor),
+        labelStyle: design.buttonL(color: design.secondary),
         label: actionMessage,
-        primaryColor: design.secondary,
+        primaryColor: design.tertiary100,
         outline: isError,
         onPressed: onAction ?? Navigator.of(context).pop,
       ),
