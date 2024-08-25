@@ -6,14 +6,14 @@ import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   late Color myColor;
   late Size mediaSize;
   late TextEditingController _emailController;
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildTop() {
     return SizedBox(
       width: mediaSize.width,
-      height: mediaSize.height * 0.37, // Adicionando altura específica
+      height: mediaSize.height * 0.22, // Adicionando altura específica
       child: Container(
         decoration: BoxDecoration(
           color: myColor,
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     final design = DesignSystem.of(context);
     return SizedBox(
       width: mediaSize.width,
-      height: mediaSize.height * 0.65,
+      height: mediaSize.height * 0.80,
       child: Card(
         margin: EdgeInsets.zero,
         color: design.secondary,
@@ -136,14 +136,14 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           Text(
-            'Bem-vindo',
+            'Cadastre-se',
             style: design.h1(color: design.primary),
           ),
           const SizedBox(
             height: 5,
           ),
           Text(
-            'Por favor realize o login com suas informações',
+            'Por favor realize o cadastro com suas informações',
             style: design.overline(color: design.primary),
           ),
           const SizedBox(
@@ -162,9 +162,53 @@ class _LoginPageState extends State<LoginPage> {
                     bottomLeft: Radius.circular(8),
                     topLeft: Radius.circular(8)),
               ),
+              child: Image.asset(AppIcons.userName),
+            ),
+            label: 'Nome completo',
+            // enable: !_accessWithBiometrics,
+            validators: Validators.required('campo obrigatório'),
+          ),
+          SizedBox(
+            height: 16.height,
+          ),
+          ADPTextFormField(
+            fillColor: design.neutral600,
+            context,
+            controller: _emailController,
+            prefixIcon: Container(
+              margin: EdgeInsets.only(right: 30),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: design.primary,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    topLeft: Radius.circular(8)),
+              ),
               child: Image.asset(AppIcons.email),
             ),
             label: 'Endereço de email',
+            // enable: !_accessWithBiometrics,
+            validators: Validators.required('campo obrigatório'),
+          ),
+          SizedBox(
+            height: 16.height,
+          ),
+          ADPTextFormField(
+            fillColor: design.neutral600,
+            context,
+            controller: _emailController,
+            prefixIcon: Container(
+              margin: EdgeInsets.only(right: 30),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: design.primary,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    topLeft: Radius.circular(8)),
+              ),
+              child: Image.asset(AppIcons.userPNG),
+            ),
+            label: 'Nome de usuário',
             // enable: !_accessWithBiometrics,
             validators: Validators.required('campo obrigatório'),
           ),
@@ -209,44 +253,8 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 30,
           ),
-          Visibility(
-            visible: true, //!_accessWithBiometrics,
-            child: Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ADPRadioButton(
-                                id: 1,
-                                groupId: 2,
-                                onChanged: (p0) {},
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Lembrar de mim',
-                                style: design.labelC(color: design.info100),
-                              ),
-                            ]),
-                      ),
-                      Text(
-                        'Esqueci a senha >',
-                        style: design.labelC(color: design.info100),
-                      ),
-                    ]),
-                SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
-          ),
           ADPDefaultButton(
-            label: 'Entrar', //!_accessWithBiometrics
+            label: 'Cadastre-se', //!_accessWithBiometrics
             // ? 'login'.translate()
             // : "biometric_access".translate(),
             primaryColor: design.tertiary100,
@@ -264,46 +272,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 Text(
-                  'ou entrar com',
+                  'ou',
                   style: design.labelXS(color: design.neutral300),
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      AppIcons.facebookPNG,
-                      height: 40,
-                      width: 40,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset(
-                      AppIcons.twitter,
-                      height: 40,
-                      width: 40,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset(
-                      AppIcons.googlePNG,
-                      height: 45,
-                      width: 45,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
                 TextButton(
                   child: Text(
-                    'Novo aqui? Clique aqui para se cadastrar >',
+                    'Já possui um cadastro? Clique aqui para entrar >',
                     style: design.labelS(color: design.info100),
                   ),
                   onPressed: () {
-                    Modular.to.pushNamed(BusBrRoutes.register);
+                    Modular.to.pushNamed(Modular.initialRoute);
                   },
                 ),
               ],
