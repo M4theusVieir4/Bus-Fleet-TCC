@@ -125,4 +125,10 @@ abstract class AppIcons {
   static const userName = '$_basePathPNG/userName.png';
 
   static const userPNG = '$_basePathPNG/user.png';
+
+  static const aimPNG = '$_basePathPNG/aim.png';
+
+  static const locationPNG = '$_basePathPNG/location.png';
+
+  static const locationMap = '$_basePathPNG/locationMap.png';
 }
