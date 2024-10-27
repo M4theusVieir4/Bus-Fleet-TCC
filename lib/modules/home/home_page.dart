@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,35 +41,77 @@ class MapSampleState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final design = DesignSystem.of(context);
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        compassEnabled: false,
-        mapToolbarEnabled: false,
-        markers: {
-          Marker(
-            markerId: MarkerId('teste'),
-            position: LatLng(-23.59301, -46.90184),
-            icon: locationMap ?? BitmapDescriptor.defaultMarker,
-          )
-        },
-        circles: {
-          Circle(
-            circleId: CircleId('teste'),
-            center: LatLng(-23.59301, -46.90184),
-            radius: 400,
-            fillColor: design.tertiary100.withOpacity(0.1),
-            strokeWidth: 2,
-            strokeColor: design.tertiary100,
+      body: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            compassEnabled: false,
+            mapToolbarEnabled: false,
+            markers: {
+              Marker(
+                markerId: MarkerId('teste'),
+                position: LatLng(-23.59301, -46.90184),
+                icon: locationMap ?? BitmapDescriptor.defaultMarker,
+              )
+            },
+            circles: {
+              Circle(
+                circleId: CircleId('teste'),
+                center: LatLng(-23.59301, -46.90184),
+                radius: 400,
+                fillColor: design.tertiary100.withOpacity(0.1),
+                strokeWidth: 2,
+                strokeColor: design.tertiary100,
+              ),
+            },
           ),
-        },
+          // Botões flutuantes na parte superior esquerda
+          Positioned(
+            top: 16,
+            left: 16,
+            child: Row(
+              children: [
+                FloatingActionButton(
+                  backgroundColor: design.primary,
+                  heroTag: "btn1",
+                  onPressed: () {
+                    // Ação do primeiro botão
+                  },
+                  child: Image.asset(
+                    AppIcons.menu,
+                    height: 24,
+                    width: 24,
+                  ),
+                ),
+                SizedBox(width: 20),
+                FloatingActionButton(
+                  backgroundColor: design.primary,
+                  heroTag: "btn2",
+                  onPressed: () {},
+                  child: Image.asset(
+                    AppIcons.bell,
+                    height: 22,
+                    width: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: TextButton(
         onPressed: () {
           _showForm(design, context);
@@ -263,6 +307,9 @@ class MapSampleState extends State<HomePage> {
             // !_accessWithBiometrics ? _onPressed : _onPressedBiometric,
             //loading: _cubit.state is LoginLoadingState,
             enablePressOnLoading: false,
+            onPressed: () {
+              Modular.to.pushNamed(BusBrRoutes.SELECT_BUS);
+            },
           ),
           SizedBox(
             height: 10,
