@@ -1,6 +1,6 @@
 class BusBrRoutes {
-  static const login = '/login/';
-  static const register = '/register/';
-
-  static const home = '/home/';
+  static const LOGIN = '/login/';
+  static const REGISTER = '/register/';
+  static const SELECT_BUS = '/select-bus/';
+  static const HOME = '/home/';
 }

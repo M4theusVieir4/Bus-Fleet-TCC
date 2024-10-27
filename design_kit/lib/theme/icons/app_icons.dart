@@ -118,7 +118,13 @@ abstract class AppIcons {
 
   static const email = '$_basePathPNG/email.png';
 
+  static const bell = '$_basePathPNG/bell.png';
+
+  static const menu = '$_basePathPNG/menu.png';
+
   static const googlePNG = '$_basePathPNG/google.png';
+
+  static const backgroundSelectPNG = '$_basePathPNG/backgroundSelect.png';
 
   static const key = '$_basePathPNG/key.png';
 

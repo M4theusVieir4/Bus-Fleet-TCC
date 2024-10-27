@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         bloc: _cubit,
         listener: (context, state) {
           if (state is LoginSucccessState) {
-            Modular.to.pushNamed(BusBrRoutes.home);
+            Modular.to.pushNamed(BusBrRoutes.HOME);
           }
 
           if (state is LoginErrorState) {
@@ -324,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: design.labelS(color: design.info100),
                   ),
                   onPressed: () {
-                    Modular.to.pushNamed(BusBrRoutes.register);
+                    Modular.to.pushNamed(BusBrRoutes.REGISTER);
                   },
                 ),
               ],
