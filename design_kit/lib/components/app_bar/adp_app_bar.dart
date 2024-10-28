@@ -29,14 +29,14 @@ class ADPAppBar extends StatelessWidget implements PreferredSizeWidget {
     final backPressed = onBackPressed ?? Navigator.of(context).pop;
 
     return AppBar(
-      centerTitle: false,
+      centerTitle: true,
       backgroundColor: backgroundColor ?? design.neutral700,
       elevation: elevation,
       leading: leading ??
           Padding(
             padding: EdgeInsets.only(left: 16.0.width),
             child: BackButton(
-              color: design.primary300,
+              color: design.neutral900,
               onPressed: backPressed,
             ),
           ),

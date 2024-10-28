@@ -5,6 +5,7 @@ import 'package:busbr/modules/auth/register/register_module.dart';
 import 'package:busbr/modules/bus_tracker/route_bus/route_bus_module.dart';
 import 'package:busbr/modules/bus_tracker/select_bus/select_bus_module.dart';
 import 'package:busbr/modules/home/home_module.dart';
+import 'package:busbr/modules/notification/notification_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
@@ -22,5 +23,6 @@ class AppModule extends Module {
     r.module(BusBrRoutes.HOME, module: HomeModule());
     r.module(BusBrRoutes.SELECT_BUS, module: SelectBusModule());
     r.module(BusBrRoutes.ROUTE_BUS, module: RouteBusModule());
+    r.module(BusBrRoutes.NOTIFICATION, module: NotificationModule());
   }
 }

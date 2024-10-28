@@ -99,7 +99,9 @@ class MapSampleState extends State<HomePage> {
                 FloatingActionButton(
                   backgroundColor: design.primary,
                   heroTag: "btn2",
-                  onPressed: () {},
+                  onPressed: () {
+                    Modular.to.pushNamed(BusBrRoutes.NOTIFICATION);
+                  },
                   child: Image.asset(
                     AppIcons.bell,
                     height: 22,
