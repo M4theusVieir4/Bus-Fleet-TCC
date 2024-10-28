@@ -137,4 +137,10 @@ abstract class AppIcons {
   static const locationPNG = '$_basePathPNG/location.png';
 
   static const locationMap = '$_basePathPNG/locationMap.png';
+
+  static const aimFillPNG = '$_basePathPNG/aimFill.png';
+
+  static const pointIconPNG = '$_basePathPNG/pointIcon.png';
+
+  static const busIconPNG = '$_basePathPNG/busIcon.png';
 }
