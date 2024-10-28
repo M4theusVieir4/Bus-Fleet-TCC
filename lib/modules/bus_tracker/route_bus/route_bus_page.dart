@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -27,7 +28,7 @@ class MapSampleState extends State<RouteBusPage> {
 
   static const CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(-23.59301, -46.90184),
-    zoom: 30.0,
+    zoom: 20.0,
   );
 
   BitmapDescriptor? busIcon;
@@ -99,10 +100,10 @@ class MapSampleState extends State<RouteBusPage> {
           ),
           // Botões flutuantes na parte superior esquerda
           Positioned(
-            top: 16,
+            top: 35,
             left: 16,
             child: FloatingActionButton(
-              backgroundColor: design.neutral500,
+              backgroundColor: design.neutral900,
               heroTag: "btn1",
               onPressed: () {
                 Modular.to.pushNamed(BusBrRoutes.SELECT_BUS);
@@ -114,7 +115,6 @@ class MapSampleState extends State<RouteBusPage> {
               ),
             ),
           ),
-          // Formulário na parte inferior do mapa
           Positioned(
             bottom: 0,
             left: 0,
@@ -151,9 +151,33 @@ class MapSampleState extends State<RouteBusPage> {
                     children: [
                       Text(
                         'A caminho',
-                        style: design.h6(color: design.primary),
+                        style: design.h4(color: design.primary),
                       ),
-                      Text('10 Min'),
+                      Container(
+                        margin: const EdgeInsets.only(right: 30),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: design.primary,
+                          shape: BoxShape.rectangle,
+                          borderRadius:
+                              BorderRadius.all(Radius.elliptical(40, 80)),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              AppIcons.clockPNG,
+                              width: 24,
+                              height: 24,
+                              color: design.tertiary100,
+                            ),
+                            Text(
+                              '10 Min',
+                              style:
+                                  design.paragraphS(color: design.neutral900),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -161,34 +185,51 @@ class MapSampleState extends State<RouteBusPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Ônibus',
-                            style: design.overline(color: design.primary),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Text(
+                              'Ônibus',
+                              style: design.overline(color: design.neutral300),
+                            ),
                           ),
-                          Text("Linha 468"),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Text(
+                              "Linha 468",
+                              style: design.paragraphDMedium(
+                                  color: design.primary),
+                            ),
+                          ),
                         ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(right: 30),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: design.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.chat,
-                          color: design.tertiary100,
+                      GestureDetector(
+                        onTap: () {
+                          _showFeedbackForm(context);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 30),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: design.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.chat,
+                            color: design.tertiary100,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 15),
                     child: CustomPaint(
                       painter: DottedBorderPainter(
                         paintLeft: true,
                         paintBottom: true,
-                        iconGapStart: 10,
+                        iconGapStart: 0,
                         iconGapEnd: 34,
                       ),
                       child: Stack(
@@ -207,8 +248,22 @@ class MapSampleState extends State<RouteBusPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Ponto 0"),
-                                        Text('Siasson Av.'),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            "Ponto 0",
+                                            style: design.overline(
+                                                color: design.neutral200),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            'Siasson Av.',
+                                            style: design.paragraphM(
+                                                color: design.primary),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -233,11 +288,12 @@ class MapSampleState extends State<RouteBusPage> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 15),
                     child: CustomPaint(
                       painter: DottedBorderPainter(
                         paintLeft: true,
                         paintBottom: false,
-                        iconGapStart: 10,
+                        iconGapStart: 8,
                         iconGapEnd: 34,
                       ),
                       child: Stack(
@@ -245,9 +301,7 @@ class MapSampleState extends State<RouteBusPage> {
                             .none, // Permite que os widgets saiam do limite do Stack
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left:
-                                    16), // Cria espaço para o ícone na borda esquerda
+                            padding: const EdgeInsets.only(left: 16),
                             child: Column(
                               children: [
                                 Row(
@@ -256,8 +310,26 @@ class MapSampleState extends State<RouteBusPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Seu Local"),
-                                        Text('West New Brighton'),
+                                        Container(
+                                            margin: EdgeInsets.only(
+                                              left: 5,
+                                              top: 10,
+                                            ),
+                                            child: Text(
+                                              "Seu Local",
+                                              style: design.overline(
+                                                  color: design.neutral200),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Text(
+                                            'West New Brighton',
+                                            style: design.paragraphM(
+                                                color: design.primary),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -282,11 +354,14 @@ class MapSampleState extends State<RouteBusPage> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(
+                      left: 15,
+                    ),
                     child: CustomPaint(
                       painter: DottedBorderPainter(
                           paintLeft: true,
                           paintBottom: true,
-                          iconGapStart: 10,
+                          iconGapStart: 8,
                           iconGapEnd: 34),
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -301,8 +376,26 @@ class MapSampleState extends State<RouteBusPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Destino"),
-                                        Text('Enderson Ava'),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Text(
+                                            "Destino",
+                                            style: design.overline(
+                                                color: design.neutral200),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Text(
+                                            'Enderson Ava',
+                                            style: design.paragraphM(
+                                                color: design.primary),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -325,8 +418,6 @@ class MapSampleState extends State<RouteBusPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const SizedBox(height: 16),
                   const SizedBox(height: 10),
                 ],
               ),
@@ -334,6 +425,62 @@ class MapSampleState extends State<RouteBusPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showFeedbackForm(BuildContext context) {
+    final design = DesignSystem.of(context);
+    showModalBottomSheet(
+      backgroundColor: design.secondary,
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Envie seu Feedback',
+                style: design.h4(color: design.primary),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Escreva aqui...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                maxLines: 7,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Adicione a ação para enviar o feedback
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: design.primary,
+                ),
+                child: Text(
+                  'Enviar',
+                  style: design.paragraphS(color: design.neutral900),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
     );
   }
 }

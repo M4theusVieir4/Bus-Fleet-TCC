@@ -143,4 +143,6 @@ abstract class AppIcons {
   static const pointIconPNG = '$_basePathPNG/pointIcon.png';
 
   static const busIconPNG = '$_basePathPNG/busIcon.png';
+
+  static const clockPNG = '$_basePathPNG/clock.png';
 }

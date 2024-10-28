@@ -58,7 +58,6 @@ class _SelectBusPageState extends State<SelectBusPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Imagem de fundo que ocupa metade da tela
           Positioned(
             top: 0,
             left: 0,
@@ -76,9 +75,24 @@ class _SelectBusPageState extends State<SelectBusPage> {
               ),
             ),
           ),
-          // ListView na parte inferior da tela, sobrepondo 10% da imagem
           Positioned(
-            top: screenHeight * 0.3, // 10% sobre a imagem de fundo
+            top: 35,
+            left: 16,
+            child: FloatingActionButton(
+              backgroundColor: design.neutral900,
+              heroTag: "btn1",
+              onPressed: () {
+                Modular.to.pushNamed(BusBrRoutes.HOME);
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: design.neutral,
+                size: 24.0,
+              ),
+            ),
+          ),
+          Positioned(
+            top: screenHeight * 0.3,
             left: 0,
             right: 0,
             bottom: 0,
