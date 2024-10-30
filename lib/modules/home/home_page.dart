@@ -87,7 +87,7 @@ class MapSampleState extends State<HomePage> {
                   backgroundColor: design.primary,
                   heroTag: "btn1",
                   onPressed: () {
-                    // Ação do primeiro botão
+                    Modular.to.pushNamed(BusBrRoutes.CONFIGURATION);
                   },
                   child: Image.asset(
                     AppIcons.menu,

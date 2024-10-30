@@ -5,4 +5,5 @@ class BusBrRoutes {
   static const ROUTE_BUS = '/route-bus/';
   static const HOME = '/home/';
   static const NOTIFICATION = '/notification/';
+  static const CONFIGURATION = '/configuration/';
 }
