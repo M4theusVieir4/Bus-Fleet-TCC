@@ -1,3 +1,4 @@
+import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,12 +95,12 @@ class _NotificationPageState extends State<NotificationPage> {
     final design = DesignSystem.of(context);
     return Scaffold(
         backgroundColor: design.neutral900,
-        appBar: ADPAppBar(
+        appBar: AppBar(
           backgroundColor: design.primary,
-          onBackPressed: () => Modular.to.pop(),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
           title: Text(
             'Notificações',
-            textAlign: TextAlign.center,
             style: design.h1(color: design.neutral900),
           ),
         ),

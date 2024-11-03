@@ -1,13 +1,21 @@
 import 'dart:async';
 
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function navigateToNotification;
+  final Function navigateToConfiguration;
+
+  const HomePage({
+    super.key,
+    required this.navigateToNotification,
+    required this.navigateToConfiguration,
+  });
 
   @override
   State<HomePage> createState() => MapSampleState();
@@ -87,7 +95,7 @@ class MapSampleState extends State<HomePage> {
                   backgroundColor: design.primary,
                   heroTag: "btn1",
                   onPressed: () {
-                    Modular.to.pushNamed(BusBrRoutes.CONFIGURATION);
+                    widget.navigateToConfiguration();
                   },
                   child: Image.asset(
                     AppIcons.menu,
@@ -100,7 +108,7 @@ class MapSampleState extends State<HomePage> {
                   backgroundColor: design.primary,
                   heroTag: "btn2",
                   onPressed: () {
-                    Modular.to.pushNamed(BusBrRoutes.NOTIFICATION);
+                    widget.navigateToNotification();
                   },
                   child: Image.asset(
                     AppIcons.bell,

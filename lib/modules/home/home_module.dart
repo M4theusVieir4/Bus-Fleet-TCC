@@ -10,6 +10,10 @@ class HomeModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child(Modular.initialRoute, child: (_) => HomePage());
+    r.child(Modular.initialRoute,
+        child: (_) => HomePage(
+              navigateToNotification: r.args.data[0],
+              navigateToConfiguration: r.args.data[1],
+            ));
   }
 }

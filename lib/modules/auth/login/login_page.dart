@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         bloc: _cubit,
         listener: (context, state) {
           if (state is LoginSucccessState) {
-            Modular.to.pushNamed(BusBrRoutes.HOME);
+            Modular.to.pushNamed(BusBrRoutes.NAVIGATION);
           }
 
           if (state is LoginErrorState) {

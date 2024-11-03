@@ -7,6 +7,7 @@ import 'package:busbr/modules/bus_tracker/select_bus/select_bus_module.dart';
 import 'package:busbr/modules/configuration/configuration_module.dart';
 import 'package:busbr/modules/configuration/configuration_page.dart';
 import 'package:busbr/modules/home/home_module.dart';
+import 'package:busbr/modules/navigation/navigation_nested_module.dart';
 import 'package:busbr/modules/notification/notification_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -21,11 +22,12 @@ class AppModule extends Module {
   void routes(RouteManager r) {
     r.module(Modular.initialRoute, module: LoginModule());
     r.module(BusBrRoutes.REGISTER, module: RegisterModule());
+    r.module(BusBrRoutes.NAVIGATION, module: NavigationNestedModule());
 
-    r.module(BusBrRoutes.HOME, module: HomeModule());
+    //r.module(BusBrRoutes.HOME, module: HomeModule());
     r.module(BusBrRoutes.SELECT_BUS, module: SelectBusModule());
     r.module(BusBrRoutes.ROUTE_BUS, module: RouteBusModule());
-    r.module(BusBrRoutes.NOTIFICATION, module: NotificationModule());
-    r.module(BusBrRoutes.CONFIGURATION, module: ConfigurationModule());
+    //r.module(BusBrRoutes.NOTIFICATION, module: NotificationModule());
+    //r.module(BusBrRoutes.CONFIGURATION, module: ConfigurationModule());
   }
 }
