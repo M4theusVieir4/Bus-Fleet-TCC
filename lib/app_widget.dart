@@ -56,6 +56,7 @@ class _AppWidgetState extends State<AppWidget> {
       mapsImplementation.useAndroidViewSurface = true;
       initializeMapRenderer();
     }
+
     return DesignSystem(
         appDesign: appDesign,
         child: LayoutBuilder(builder: (context, constraints) {

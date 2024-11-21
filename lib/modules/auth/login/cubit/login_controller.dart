@@ -1,4 +1,5 @@
-import 'package:busbr/domain/interfaces/auth_service_interface.dart';
+import 'package:busbr/domain/entities/usuario/usuario_entity.dart';
+import 'package:busbr/domain/interfaces/services/auth_service_interface.dart';
 import 'package:busbr/modules/auth/login/cubit/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,15 +19,13 @@ class LoginController extends Cubit<LoginState> {
   }) async {
     emit(LoginLoadingState());
 
-    var loginResult = await _authService.loginUsers(
+    var loginResult = await _authService.login(
       email: email,
       password: password,
     );
-
-    if (loginResult == null) {
-      emit(LoginSucccessState());
-    } else {
-      emit(LoginErrorState(loginResult));
-    }
+    loginResult.result((data) async {
+      UsuarioEntity user = data.usuario!;
+      emit(LoginSucccessState(user));
+    }, (error) => emit(LoginErrorState(error.message)));
   }
 }

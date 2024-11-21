@@ -1,4 +1,4 @@
-import 'package:busbr/domain/interfaces/auth_service_interface.dart';
+import 'package:busbr/domain/interfaces/services/auth_service_interface.dart';
 import 'package:busbr/modules/auth/register/cubit/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,10 +25,10 @@ class RegisterController extends Cubit<RegisterState> {
       password: password,
     );
 
-    if (registerResult == null) {
+    if (registerResult != null) {
       emit(RegisterSucccessState());
     } else {
-      emit(RegisterErrorState(registerResult));
+      emit(RegisterErrorState(registerResult as String?));
     }
   }
 }

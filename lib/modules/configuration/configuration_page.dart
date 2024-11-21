@@ -1,5 +1,8 @@
+import 'package:busbr/domain/entities/usuario/usuario_entity.dart';
+import 'package:busbr/modules/auth/login/cubit/login_controller.dart';
 import 'package:design_kit/configs/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({super.key});
@@ -9,8 +12,18 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  bool isModoDeficientes = true;
+  bool isModoDeficientes = false;
   bool isNotificacoes = false;
+  late UsuarioEntity _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = Modular.get<LoginController>().state.user!;
+    isModoDeficientes = _user.preferencia!.deficiencia;
+    isNotificacoes = _user.preferencia!.notificacao;
+  }
+
   @override
   Widget build(BuildContext context) {
     final design = DesignSystem.of(context);
@@ -19,22 +32,18 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Container superior com 30% da altura da tela
             Column(
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.3,
                   decoration: BoxDecoration(
-                    color: design.primary, // Cor azul
+                    color: design.primary,
                     borderRadius: BorderRadius.only(
-                      bottomLeft:
-                          Radius.circular(20.0), // Borda arredondada esquerda
-                      bottomRight:
-                          Radius.circular(20.0), // Borda arredondada direita
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
                     ),
                   ),
-                  padding: EdgeInsets.only(
-                      left: 16, top: 40), // Adiciona um padding ao Container
+                  padding: EdgeInsets.only(left: 16, top: 40),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Row(
@@ -43,9 +52,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           Icons.settings,
                           color: design.neutral900,
                         ),
-                        SizedBox(
-                            width:
-                                8), // Adiciona espaço entre o ícone e o texto
+                        SizedBox(width: 8),
                         Text(
                           'Configurações',
                           style: design.h1(color: design.neutral900),
@@ -56,13 +63,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 ),
               ],
             ),
-
             Positioned(
               bottom: 0,
-              left:
-                  0, // Adicione esta linha para garantir que comece do lado esquerdo
-              right:
-                  0, // Adicione esta linha para garantir que termine do lado direito
+              left: 0,
+              right: 0,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -105,16 +109,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                                'VIEIRAMATHEUS', // Substitua por uma variável com o nome do usuário
+                            Text(_user.nome!,
                                 style:
                                     design.paragraphM(color: design.neutral)),
                           ],
                         ),
                       ),
                       Divider(
-                        color: design.neutral500, // Cor da linha de separação
-                        thickness: 1.5, // Espessura da linha
+                        color: design.neutral500,
+                        thickness: 1.5,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -171,7 +174,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         ),
                       ),
                       Divider(
-                        color: design.neutral500, // Linha divisória adicional
+                        color: design.neutral500,
                         thickness: 1.5,
                       ),
                       Padding(

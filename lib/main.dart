@@ -1,6 +1,7 @@
 import 'package:busbr/app_module.dart';
 import 'package:busbr/app_widget.dart';
 import 'package:busbr/firebase_options.dart';
+import 'package:busbr/infra/config/environment/environment_config.dart';
 import 'package:busbr/infra/utils/notifications/push_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await EnvironmentConfig.init(environment: ADPEnvironment.prod);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

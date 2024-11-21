@@ -1,24 +1,28 @@
+import 'package:busbr/domain/entities/usuario/usuario_entity.dart';
+
 sealed class LoginState {
-  LoginState();
+  late final UsuarioEntity? user;
+
+  LoginState(this.user);
 }
 
 class LoginIniticialState extends LoginState {
-  LoginIniticialState() : super();
+  LoginIniticialState() : super(null);
 }
 
 class LoginInitializedState extends LoginState {
-  LoginInitializedState();
+  LoginInitializedState() : super(null);
 }
 
 class LoginLoadingState extends LoginState {
-  LoginLoadingState() : super();
+  LoginLoadingState() : super(null);
 }
 
 class LoginSucccessState extends LoginState {
-  LoginSucccessState();
+  LoginSucccessState(super.user);
 }
 
 class LoginErrorState extends LoginState {
   final String message;
-  LoginErrorState(this.message) : super();
+  LoginErrorState(this.message) : super(null);
 }

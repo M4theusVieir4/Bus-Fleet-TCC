@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ADPBottomSheet.error(
                 context: context,
                 title: 'Erro ao Cadastrar',
-                message: state.message,
+                message: state.message!,
                 actionMessage: 'tente novamente',
               );
             }

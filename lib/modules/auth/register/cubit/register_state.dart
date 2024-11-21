@@ -19,6 +19,6 @@ class RegisterSucccessState extends RegisterState {
 }
 
 class RegisterErrorState extends RegisterState {
-  final String message;
+  final String? message;
   RegisterErrorState(this.message) : super();
 }
