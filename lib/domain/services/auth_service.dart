@@ -10,7 +10,6 @@ class AuthService implements IAuthService {
   AuthService({
     required IAuthRepository authRepository,
   }) : _authRepository = authRepository;
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   AsyncResult<String?> registerUser(

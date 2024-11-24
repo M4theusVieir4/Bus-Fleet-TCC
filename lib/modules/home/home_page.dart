@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
+import 'package:busbr/infra/core/validators/validators.dart';
+import 'package:busbr/modules/home/cubit/home_controller.dart';
+import 'package:busbr/modules/home/cubit/home_state.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -18,10 +22,10 @@ class HomePage extends StatefulWidget {
   });
 
   @override
-  State<HomePage> createState() => MapSampleState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class MapSampleState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -37,89 +41,121 @@ class MapSampleState extends State<HomePage> {
       zoom: 19.151926040649414);
   BitmapDescriptor? locationMap;
 
+  late HomeController _cubit;
+
+  //Formulários
+  late TextEditingController _enderecoOrigemController;
+  late TextEditingController _enderecoDestinoController;
+  late GlobalKey<FormState> _formKey;
+
   @override
   void initState() {
-    super.initState();
-
+    _cubit = Modular.get()..initialize();
+    _enderecoOrigemController = TextEditingController();
+    _enderecoDestinoController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
     BitmapDescriptor.asset(
             ImageConfiguration(size: Size(100, 100)), AppIcons.locationMap)
         .then((onValue) {
       locationMap = onValue;
     });
+    super.initState();
   }
 
   @override
   void dispose() {
+    _enderecoOrigemController.dispose();
+    _enderecoDestinoController.dispose();
+    _cubit.close();
     super.dispose();
+  }
+
+  void _onPressed() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _cubit.buscarRota(
+        enderecoOrigem: _enderecoOrigemController.text,
+        enderecoDestino: _enderecoDestinoController.text,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final design = DesignSystem.of(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            compassEnabled: false,
-            mapToolbarEnabled: false,
-            markers: {
-              Marker(
-                markerId: MarkerId('teste'),
-                position: LatLng(-23.59301, -46.90184),
-                icon: locationMap ?? BitmapDescriptor.defaultMarker,
-              )
-            },
-            circles: {
-              Circle(
-                circleId: CircleId('teste'),
-                center: LatLng(-23.59301, -46.90184),
-                radius: 400,
-                fillColor: design.tertiary100.withOpacity(0.1),
-                strokeWidth: 2,
-                strokeColor: design.tertiary100,
+      body: BlocConsumer<HomeController, HomeState>(
+        bloc: _cubit,
+        listener: (context, state) {
+          if (state is HomeSuccessState) {
+            Modular.to.pushNamed(BusBrRoutes.SELECT_BUS);
+          }
+        },
+        builder: (context, state) {
+          return Stack(
+            children: [
+              GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: _kGooglePlex,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                compassEnabled: false,
+                mapToolbarEnabled: false,
+                markers: {
+                  Marker(
+                    markerId: MarkerId('teste'),
+                    position: LatLng(-23.59301, -46.90184),
+                    icon: locationMap ?? BitmapDescriptor.defaultMarker,
+                  )
+                },
+                circles: {
+                  Circle(
+                    circleId: CircleId('teste'),
+                    center: LatLng(-23.59301, -46.90184),
+                    radius: 400,
+                    fillColor: design.tertiary100.withOpacity(0.1),
+                    strokeWidth: 2,
+                    strokeColor: design.tertiary100,
+                  ),
+                },
               ),
-            },
-          ),
-          // Botões flutuantes na parte superior esquerda
-          Positioned(
-            top: 16,
-            left: 16,
-            child: Row(
-              children: [
-                FloatingActionButton(
-                  backgroundColor: design.primary,
-                  heroTag: "btn1",
-                  onPressed: () {
-                    widget.navigateToConfiguration();
-                  },
-                  child: Image.asset(
-                    AppIcons.menu,
-                    height: 24,
-                    width: 24,
-                  ),
+              // Botões flutuantes na parte superior esquerda
+              Positioned(
+                top: 16,
+                left: 16,
+                child: Row(
+                  children: [
+                    FloatingActionButton(
+                      backgroundColor: design.primary,
+                      heroTag: "btn1",
+                      onPressed: () {
+                        widget.navigateToConfiguration();
+                      },
+                      child: Image.asset(
+                        AppIcons.menu,
+                        height: 24,
+                        width: 24,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    FloatingActionButton(
+                      backgroundColor: design.primary,
+                      heroTag: "btn2",
+                      onPressed: () {
+                        widget.navigateToNotification();
+                      },
+                      child: Image.asset(
+                        AppIcons.bell,
+                        height: 22,
+                        width: 22,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 20),
-                FloatingActionButton(
-                  backgroundColor: design.primary,
-                  heroTag: "btn2",
-                  onPressed: () {
-                    widget.navigateToNotification();
-                  },
-                  child: Image.asset(
-                    AppIcons.bell,
-                    height: 22,
-                    width: 22,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: TextButton(
@@ -237,7 +273,7 @@ class MapSampleState extends State<HomePage> {
     // await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
 
     return Form(
-      //key: _formKey,
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -261,7 +297,7 @@ class MapSampleState extends State<HomePage> {
           ADPTextFormField(
             fillColor: design.neutral600,
             context,
-            //controller: _emailController,
+            controller: _enderecoOrigemController,
             prefixIcon: Container(
               margin: EdgeInsets.only(right: 30),
               padding: EdgeInsets.all(10),
@@ -273,9 +309,8 @@ class MapSampleState extends State<HomePage> {
               ),
               child: Image.asset(AppIcons.locationPNG),
             ),
-            label: 'Endereço ',
-            // enable: !_accessWithBiometrics,
-            // validators: Validators.required('campo obrigatório'),
+            label: 'Insira o local de partida',
+            validators: Validators.required('campo obrigatório'),
           ),
           SizedBox(
             height: 16.height,
@@ -284,7 +319,7 @@ class MapSampleState extends State<HomePage> {
             child: ADPTextFormField(
               fillColor: design.neutral600,
               context,
-              // controller: _passwordController,
+              controller: _enderecoDestinoController,
               prefixIcon: Container(
                 margin: EdgeInsets.only(right: 30),
                 padding: EdgeInsets.all(10),
@@ -296,30 +331,21 @@ class MapSampleState extends State<HomePage> {
                 ),
                 child: Image.asset(AppIcons.aimPNG),
               ),
-              label: 'Estrada Manoel Lag...',
-              // obscureText: _isObscurePassword,
-
+              label: 'Para onde?',
               formFieldType: TextInputType.text,
-              //validators: Validators.required('campo obrigatório'),
+              validators: Validators.required('campo obrigatório'),
             ),
           ),
           const SizedBox(
             height: 30,
           ),
           ADPDefaultButton(
-            label: 'Buscar', //!_accessWithBiometrics
-            // ? 'login'.translate()
-            // : "biometric_access".translate(),
+            label: 'Buscar',
             primaryColor: design.tertiary100,
             labelColor: design.neutral900,
             colorLoading: design.neutral900,
-            //onPressed: _onPressed,
-            // !_accessWithBiometrics ? _onPressed : _onPressedBiometric,
-            //loading: _cubit.state is LoginLoadingState,
             enablePressOnLoading: false,
-            onPressed: () {
-              Modular.to.pushNamed(BusBrRoutes.SELECT_BUS);
-            },
+            onPressed: _onPressed,
           ),
           SizedBox(
             height: 10,
