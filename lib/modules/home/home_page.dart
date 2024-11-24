@@ -30,13 +30,13 @@ class _HomePageState extends State<HomePage> {
       Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(-23.59301, -46.90184),
+    target: LatLng(-23.60212425120302, -46.639937315130155),
     zoom: 14.4746,
   );
 
   static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
+      target: LatLng(-23.60212425120302, -46.639937315130155),
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
   BitmapDescriptor? locationMap;
@@ -104,14 +104,14 @@ class _HomePageState extends State<HomePage> {
                 markers: {
                   Marker(
                     markerId: MarkerId('teste'),
-                    position: LatLng(-23.59301, -46.90184),
+                    position: LatLng(-23.60212425120302, -46.639937315130155),
                     icon: locationMap ?? BitmapDescriptor.defaultMarker,
                   )
                 },
                 circles: {
                   Circle(
                     circleId: CircleId('teste'),
-                    center: LatLng(-23.59301, -46.90184),
+                    center: LatLng(-23.60212425120302, -46.639937315130155),
                     radius: 400,
                     fillColor: design.tertiary100.withOpacity(0.1),
                     strokeWidth: 2,

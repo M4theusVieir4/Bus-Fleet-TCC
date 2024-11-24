@@ -1,15 +1,26 @@
-sealed class HomeState {}
+import 'package:busbr/domain/entities/routes/ponto_entity.dart';
 
-class HomeInitialState implements HomeState {}
+sealed class HomeState {
+  late final List<PontoEntity>? ponto;
 
-class LoadingHomeState implements HomeState {}
+  HomeState(this.ponto);
+}
+
+class HomeInitialState extends HomeState {
+  HomeInitialState() : super(null);
+}
+
+class HomeLoadingState extends HomeState {
+  HomeLoadingState() : super(null);
+}
 
 class HomeErrorState extends HomeState {
   final String message;
-  HomeErrorState(this.message);
+  HomeErrorState(this.message) : super(null);
 }
 
 class HomeSuccessState extends HomeState {
-  final bool hasNotifications;
-  HomeSuccessState(this.hasNotifications);
+  //final bool hasNotifications;
+
+  HomeSuccessState(super.ponto);
 }

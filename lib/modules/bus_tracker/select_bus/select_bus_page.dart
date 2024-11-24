@@ -1,7 +1,9 @@
+import 'package:busbr/domain/entities/routes/ponto_entity.dart';
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:busbr/infra/core/validators/validators.dart';
 import 'package:busbr/modules/auth/login/cubit/login_controller.dart';
 import 'package:busbr/modules/auth/login/cubit/login_state.dart';
+import 'package:busbr/modules/home/cubit/home_controller.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,39 +17,31 @@ class SelectBusPage extends StatefulWidget {
 }
 
 class _SelectBusPageState extends State<SelectBusPage> {
-  late Color myColor;
-  late Size mediaSize;
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late GlobalKey<FormState> _formKey;
   late LoginController _cubit;
+  late List<PontoEntity> _pontos;
   bool _isObscurePassword = true;
   bool rememberUser = false;
 
   @override
   void initState() {
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _formKey = GlobalKey<FormState>();
+    _pontos = Modular.get<HomeController>().state.ponto!;
     _cubit = Modular.get()..initialize();
     super.initState();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
     _cubit.close();
     super.dispose();
   }
 
   void _onPressed() {
-    if (_formKey.currentState?.validate() ?? false) {
-      _cubit.login(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-    }
+    // if (_formKey.currentState?.validate() ?? false) {
+    //   _cubit.login(
+    //     email: _emailController.text,
+    //     password: _passwordController.text,
+    //   );
+    // }
   }
 
   @override
@@ -97,11 +91,13 @@ class _SelectBusPageState extends State<SelectBusPage> {
             right: 0,
             bottom: 0,
             child: ListView.separated(
-              itemCount: 4,
+              itemCount: _pontos[0].onibusRota!.length,
               padding: EdgeInsets.only(top: 16),
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(color: Colors.transparent),
               itemBuilder: (BuildContext context, int index) {
+                int idRotas = _pontos[0].onibusRota![index].idRotas;
+                int idOnibus = _pontos[0].onibusRota![index].idOnibus;
                 return GestureDetector(
                   onTap: () {
                     Modular.to.pushNamed(BusBrRoutes.ROUTE_BUS);
@@ -150,8 +146,15 @@ class _SelectBusPageState extends State<SelectBusPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
-                                      'Linha 468',
+                                    Text(
+                                      _pontos[0]
+                                              .rotas!
+                                              .firstWhere(
+                                                (element) =>
+                                                    element.idRotas == idRotas,
+                                              )
+                                              .nomeRota ??
+                                          'Rota Não Encontrada',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -160,14 +163,14 @@ class _SelectBusPageState extends State<SelectBusPage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Row(
-                                      children: const [
+                                      children: [
                                         Text(
                                           'De: ',
                                           style: TextStyle(color: Colors.black),
                                         ),
                                         Expanded(
                                           child: Text(
-                                            'Terminal Cotia',
+                                            _pontos[0].ruaAvenida!,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w600,
@@ -179,14 +182,14 @@ class _SelectBusPageState extends State<SelectBusPage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Row(
-                                      children: const [
+                                      children: [
                                         Text(
                                           'Para: ',
                                           style: TextStyle(color: Colors.black),
                                         ),
                                         Expanded(
                                           child: Text(
-                                            'Res. das Estrelas',
+                                            _pontos[1].ruaAvenida!,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w600,
@@ -216,7 +219,7 @@ class _SelectBusPageState extends State<SelectBusPage> {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Text(
                                           'Preço:',
                                           style: TextStyle(
@@ -229,7 +232,11 @@ class _SelectBusPageState extends State<SelectBusPage> {
                                           width: 5,
                                         ),
                                         Text(
-                                          '8 \$',
+                                          '${_pontos[0].onibus!.firstWhere(
+                                                (element) =>
+                                                    element.idOnibus ==
+                                                    idOnibus,
+                                              ).taxaOnibus!.toStringAsFixed(2).replaceAll('.', ',')} \$',
                                           style: TextStyle(
                                             color: Colors.green,
                                             fontWeight: FontWeight.bold,
