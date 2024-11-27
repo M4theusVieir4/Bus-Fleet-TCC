@@ -28,6 +28,7 @@ class ADPTextFormField extends FormField<String> {
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
   final bool loading;
+  final Widget? child;
 
   ADPTextFormField(
     this.context, {
@@ -55,6 +56,7 @@ class ADPTextFormField extends FormField<String> {
     this.inputFormatters,
     this.focusNode,
     this.loading = false,
+    this.child,
   }) : super(
           builder: (field) {
             final design = DesignSystem.of(context);
@@ -84,66 +86,69 @@ class ADPTextFormField extends FormField<String> {
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        focusNode: focusNode,
-                        inputFormatters: inputFormatters,
-                        controller: controller,
-                        initialValue: initialText,
-                        enabled: enable,
-                        keyboardType: formFieldType,
-                        obscureText: obscureText,
-                        autovalidateMode: validateMode,
-                        validator: validators,
-                        onTap: onTap,
-                        onEditingComplete: onEditingComplete,
-                        onChanged: onChanged,
-                        autofocus: autofocus,
-                        maxLines: maxLines,
-                        maxLength: maxLength,
-                        cursorColor: design.neutral,
-                        style: design.labelM(
-                          color: design.neutral,
-                        ),
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: fillColor != null || !enable,
-                          labelText: label,
-                          labelStyle: design.labelD(color: design.primary),
-                          errorStyle: design.caption(
-                            color: design.error100,
+                      child: child ?? // Use o child se disponível
+                          TextFormField(
+                            focusNode: focusNode,
+                            inputFormatters: inputFormatters,
+                            controller: controller,
+                            initialValue: initialText,
+                            enabled: enable,
+                            keyboardType: formFieldType,
+                            obscureText: obscureText,
+                            autovalidateMode: validateMode,
+                            validator: validators,
+                            onTap: onTap,
+                            onEditingComplete: onEditingComplete,
+                            onChanged: onChanged,
+                            autofocus: autofocus,
+                            maxLines: maxLines,
+                            maxLength: maxLength,
+                            cursorColor: design.neutral,
+                            style: design.labelM(
+                              color: design.neutral,
+                            ),
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: fillColor != null || !enable,
+                              labelText: label,
+                              labelStyle: design.labelD(color: design.primary),
+                              errorStyle: design.caption(
+                                color: design.error100,
+                              ),
+                              fillColor: !enable
+                                  ? fillColor ??
+                                      design.neutral800.withOpacity(.5)
+                                  : fillColor,
+                              prefixIcon: prefixIcon,
+                              suffixIcon: toggleObscureText != null
+                                  ? suffixIcon ??
+                                      _hiddenTextIcon(
+                                        design,
+                                        isObscure: obscureText,
+                                        onTap: toggleObscureText,
+                                      )
+                                  : suffixIcon,
+                              enabledBorder: _borderStyle(
+                                design,
+                              ),
+                              disabledBorder: _borderStyle(
+                                design,
+                              ),
+                              focusedBorder: _borderStyle(
+                                design,
+                                isFocused: true,
+                              ),
+                              errorBorder: _borderStyle(
+                                design,
+                                isError: true,
+                              ),
+                              focusedErrorBorder: _borderStyle(
+                                design,
+                                isError: true,
+                              ),
+                            ),
                           ),
-                          fillColor: !enable
-                              ? fillColor ?? design.neutral800.withOpacity(.5)
-                              : fillColor,
-                          prefixIcon: prefixIcon,
-                          suffixIcon: toggleObscureText != null
-                              ? suffixIcon ??
-                                  _hiddenTextIcon(
-                                    design,
-                                    isObscure: obscureText,
-                                    onTap: toggleObscureText,
-                                  )
-                              : suffixIcon,
-                          enabledBorder: _borderStyle(
-                            design,
-                          ),
-                          disabledBorder: _borderStyle(
-                            design,
-                          ),
-                          focusedBorder: _borderStyle(
-                            design,
-                            isFocused: true,
-                          ),
-                          errorBorder: _borderStyle(
-                            design,
-                            isError: true,
-                          ),
-                          focusedErrorBorder: _borderStyle(
-                            design,
-                            isError: true,
-                          ),
-                        ),
-                      ),
                     ),
                     if (loading) ...[
                       Padding(
@@ -162,9 +167,6 @@ class ADPTextFormField extends FormField<String> {
             );
           },
         );
-
-  @override
-  _ADPTextFormFieldState createState() => _ADPTextFormFieldState();
 }
 
 InkWell _hiddenTextIcon(

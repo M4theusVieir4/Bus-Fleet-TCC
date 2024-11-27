@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
 
 class HomePage extends StatefulWidget {
   final Function navigateToNotification;
@@ -295,45 +296,63 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           ADPTextFormField(
-            fillColor: design.neutral600,
             context,
-            controller: _enderecoOrigemController,
-            prefixIcon: Container(
-              margin: EdgeInsets.only(right: 30),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: design.primary,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    topLeft: Radius.circular(8)),
+            child: GooglePlaceAutoCompleteTextField(
+              textEditingController: _enderecoOrigemController,
+              googleAPIKey: "AIzaSyAJFzDLmQgIuoEQ4gf6_LbRSPgtuQLSH_o",
+              inputDecoration: InputDecoration(
+                hintText: "Digite o endereço de origem",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
-              child: Image.asset(AppIcons.locationPNG),
+              debounceTime: 800,
+              countries: ["br"],
+              isLatLngRequired: true,
+              getPlaceDetailWithLatLng: (placeDetail) {
+                print(
+                    "Endereço selecionado: ${placeDetail.lat} ${placeDetail.lng}");
+              },
+              itemClick: (prediction) {
+                _enderecoOrigemController.text = prediction.description!;
+                _enderecoOrigemController.selection =
+                    TextSelection.fromPosition(
+                  TextPosition(offset: _enderecoOrigemController.text.length),
+                );
+              },
             ),
-            label: 'Insira o local de partida',
-            validators: Validators.required('campo obrigatório'),
           ),
           SizedBox(
             height: 16.height,
           ),
           Visibility(
             child: ADPTextFormField(
-              fillColor: design.neutral600,
               context,
-              controller: _enderecoDestinoController,
-              prefixIcon: Container(
-                margin: EdgeInsets.only(right: 30),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: design.primary,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      topLeft: Radius.circular(8)),
+              child: GooglePlaceAutoCompleteTextField(
+                textEditingController: _enderecoDestinoController,
+                googleAPIKey: "AIzaSyAJFzDLmQgIuoEQ4gf6_LbRSPgtuQLSH_o",
+                inputDecoration: InputDecoration(
+                  hintText: "Para onde?",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
-                child: Image.asset(AppIcons.aimPNG),
+                debounceTime: 800,
+                countries: ["br"],
+                isLatLngRequired: true,
+                getPlaceDetailWithLatLng: (placeDetail) {
+                  print(
+                      "Endereço selecionado: ${placeDetail.lat} ${placeDetail.lng}");
+                },
+                itemClick: (prediction) {
+                  _enderecoDestinoController.text = prediction.description!;
+                  _enderecoDestinoController.selection =
+                      TextSelection.fromPosition(
+                    TextPosition(
+                        offset: _enderecoDestinoController.text.length),
+                  );
+                },
               ),
-              label: 'Para onde?',
-              formFieldType: TextInputType.text,
-              validators: Validators.required('campo obrigatório'),
             ),
           ),
           const SizedBox(

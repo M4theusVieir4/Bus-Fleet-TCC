@@ -1,3 +1,4 @@
+import 'package:busbr/domain/entities/onibus/onibus.dart';
 import 'package:busbr/domain/entities/routes/ponto_entity.dart';
 import 'package:busbr/domain/interfaces/repositories/bus_repository_interface.dart';
 import 'package:busbr/infra/config/network/endpoints/endpoints.dart';
@@ -31,5 +32,12 @@ class BusRepository extends IBusRepository {
         .resultList((json) {
       return json.map((e) => PontoEntity.fromJson(e)).toList();
     });
+  }
+
+  @override
+  AsyncResult<Onibus> searchOnibus({required int idOnibus}) {
+    return _httpClient
+        .get(Endpoints.busSearch(idOnibus))
+        .result((json) => Onibus.fromJson(json));
   }
 }

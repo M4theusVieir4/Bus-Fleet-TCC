@@ -1,3 +1,4 @@
+import 'package:busbr/domain/entities/onibus/onibus.dart';
 import 'package:busbr/domain/entities/routes/ponto_entity.dart';
 import 'package:busbr/domain/interfaces/repositories/bus_repository_interface.dart';
 import 'package:busbr/domain/interfaces/services/bus_service_interface.dart';
@@ -20,5 +21,11 @@ class BusService implements IBusService {
       enderecoDestino: enderecoDestino,
     );
     return pontos;
+  }
+
+  @override
+  AsyncResult<Onibus> searchBus({required int idOnibus}) {
+    var onibus = _busRepository.searchOnibus(idOnibus: idOnibus);
+    return onibus;
   }
 }

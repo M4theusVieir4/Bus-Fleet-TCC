@@ -1,12 +1,9 @@
 import 'package:busbr/domain/entities/routes/ponto_entity.dart';
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
-import 'package:busbr/infra/core/validators/validators.dart';
-import 'package:busbr/modules/auth/login/cubit/login_controller.dart';
-import 'package:busbr/modules/auth/login/cubit/login_state.dart';
+import 'package:busbr/modules/bus_tracker/select_bus/cubit/select_bus_controller.dart';
 import 'package:busbr/modules/home/cubit/home_controller.dart';
 import 'package:design_kit/design_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SelectBusPage extends StatefulWidget {
@@ -17,7 +14,7 @@ class SelectBusPage extends StatefulWidget {
 }
 
 class _SelectBusPageState extends State<SelectBusPage> {
-  late LoginController _cubit;
+  late SelectBusController _cubit;
   late List<PontoEntity> _pontos;
   bool _isObscurePassword = true;
   bool rememberUser = false;
@@ -35,13 +32,8 @@ class _SelectBusPageState extends State<SelectBusPage> {
     super.dispose();
   }
 
-  void _onPressed() {
-    // if (_formKey.currentState?.validate() ?? false) {
-    //   _cubit.login(
-    //     email: _emailController.text,
-    //     password: _passwordController.text,
-    //   );
-    // }
+  void _onPressed(int idOnibus) {
+    _cubit.buscarOnibus(idOnibus: idOnibus);
   }
 
   @override
@@ -100,7 +92,8 @@ class _SelectBusPageState extends State<SelectBusPage> {
                 int idOnibus = _pontos[0].onibusRota![index].idOnibus;
                 return GestureDetector(
                   onTap: () {
-                    Modular.to.pushNamed(BusBrRoutes.ROUTE_BUS);
+                    //Modular.to.pushNamed(BusBrRoutes.ROUTE_BUS);
+                    _onPressed(idOnibus);
                   },
                   child: Align(
                     alignment: Alignment.center,
