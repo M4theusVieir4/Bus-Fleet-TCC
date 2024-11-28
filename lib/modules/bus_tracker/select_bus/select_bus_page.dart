@@ -1,4 +1,5 @@
 import 'package:busbr/domain/entities/routes/ponto_entity.dart';
+import 'package:busbr/infra/config/navigation_manager/navigate.dart';
 import 'package:busbr/infra/core/routes/bus_br_routes.dart';
 import 'package:busbr/modules/bus_tracker/select_bus/cubit/select_bus_controller.dart';
 import 'package:busbr/modules/bus_tracker/select_bus/cubit/select_bus_state.dart';
@@ -16,6 +17,7 @@ class SelectBusPage extends StatefulWidget {
 }
 
 class _SelectBusPageState extends State<SelectBusPage> {
+  int _indexSelected = 0;
   late SelectBusController _cubit;
   late List<PontoEntity> _pontos;
   bool _isObscurePassword = true;
@@ -36,6 +38,36 @@ class _SelectBusPageState extends State<SelectBusPage> {
 
   void _onPressed(int idOnibus) {
     _cubit.buscarOnibus(idOnibus: idOnibus);
+  }
+
+  void _onPageChange({
+    required int index,
+    required String route,
+    List<VoidCallback>? args,
+  }) {
+    if (index != _indexSelected) {
+      setState(
+        () => _indexSelected = index,
+      );
+      Navigate.pushNamed(
+        route,
+        arguments: args,
+      );
+    }
+  }
+
+  void _navigateToNotification() {
+    _onPageChange(
+      index: 1,
+      route: BusBrRoutes.NOTIFICATION,
+    );
+  }
+
+  void _navigateToConfiguration() {
+    _onPageChange(
+      index: 2,
+      route: BusBrRoutes.CONFIGURATION,
+    );
   }
 
   @override
@@ -78,7 +110,7 @@ class _SelectBusPageState extends State<SelectBusPage> {
                 backgroundColor: design.neutral900,
                 heroTag: "btn1",
                 onPressed: () {
-                  Modular.to.pushNamed(BusBrRoutes.HOME);
+                  Modular.to.pop();
                 },
                 child: Icon(
                   Icons.arrow_back,
